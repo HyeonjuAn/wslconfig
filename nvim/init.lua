@@ -72,13 +72,14 @@ require('packer').startup(function(use)
         end
     }
 
-    -- lsp
+    -- lsp/cmp
     use { 'williamboman/mason.nvim' }
     use { 'williamboman/mason-lspconfig.nvim' }
     use({ 'neovim/nvim-lspconfig' })
     use({ 'hrsh7th/nvim-cmp' })
     use({ 'hrsh7th/cmp-nvim-lsp' })
     use({ 'hrsh7th/cmp-buffer' })
+    use 'L3MON4D3/LuaSnip'
 
     -- treesitter
     use 'nvim-treesitter/nvim-treesitter'
@@ -328,4 +329,5 @@ require('nvim-autopairs').setup({
 })
 
 -- colorscheme
+vim.cmd [[colorscheme moonfly]]
 vim.cmd [[colorscheme moonfly]]
