@@ -145,6 +145,11 @@ _G.packer_plugins = {
     path = "/home/hyeonju/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
   },
+  ["vim-moonfly-colors"] = {
+    loaded = true,
+    path = "/home/hyeonju/.local/share/nvim/site/pack/packer/start/vim-moonfly-colors",
+    url = "https://github.com/bluz71/vim-moonfly-colors"
+  },
   ["vim-surround"] = {
     loaded = true,
     path = "/home/hyeonju/.local/share/nvim/site/pack/packer/start/vim-surround",

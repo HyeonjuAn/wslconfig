@@ -82,6 +82,8 @@ require('packer').startup(function(use)
     -- treesitter
     use 'nvim-treesitter/nvim-treesitter'
 
+    -- colorscheme
+    use 'bluz71/vim-moonfly-colors'
 
     if packer_bootstrap then
         require('packer').sync()
@@ -265,3 +267,6 @@ require('nvim-ts-autotag').setup({
 require('nvim-autopairs').setup({
     disable_filetype = { 'TelescopePrompt', 'vim' }
 })
+
+-- colorscheme
+vim.cmd [[colorscheme moonfly]]
