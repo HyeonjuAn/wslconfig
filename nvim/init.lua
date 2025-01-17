@@ -78,6 +78,7 @@ require('packer').startup(function(use)
     use({ 'neovim/nvim-lspconfig' })
     use({ 'hrsh7th/nvim-cmp' })
     use({ 'hrsh7th/cmp-nvim-lsp' })
+    use({ 'hrsh7th/cmp-buffer' })
 
     -- treesitter
     use 'nvim-treesitter/nvim-treesitter'
@@ -96,6 +97,17 @@ local actions = require('telescope.actions')
 keymap.set('n', '<leader>f', builtin.find_files, {})
 keymap.set('n', '<leader>g', builtin.live_grep, {})
 require('telescope').setup {
+    pickers = {
+        find_files = {
+            hidden = true
+        },
+        grep_string = {
+            additional_args = { "--hidden" }
+        },
+        live_grep = {
+            additional_args = { "--hidden" }
+        },
+    },
     defaults = {
         path_display = { 'smart' },
         mappings = {
@@ -184,10 +196,57 @@ local cmp = require('cmp')
 cmp.setup({
     sources = {
         { name = 'nvim_lsp' },
+        { name = 'buffer' }
     },
     snippet = {
         expand = function(args)
             require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-c>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        ['<c-d>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(1) then
+                luasnip.jump(1)
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
+        ['<C-j>'] = cmp.mapping(cmp.mapping.select_next_item({
+            behavior = cmp.SelectBehavior.Select
+        }), { 'i', 'c' }),
+        ['<C-k>'] = cmp.mapping(cmp.mapping.select_prev_item({
+            behavior = cmp.SelectBehavior.Select
+        }), { 'i', 'c' }),
+        ['<c-b>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { "i", "s" })
+    }),
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' }, -- For luasnip users.
+        { name = 'path' },
+    }),
+    formatting = {
+        format = function(entry, vim_item)
+            vim_item.menu = ({
+                buffer = '[Buffer]',
+                nvim_lsp = '[LSP]',
+                luasnip = '[Snippet]',
+                path = '[Path]',
+                ['vim-dadbod-completion'] = '[DB]',
+            })[entry.source.name]
+            return vim_item
         end,
     },
 })
