@@ -61,6 +61,16 @@ require('packer').startup(function(use)
         'nvim-tree/nvim-tree.lua',
     }
 
+    -- surround
+    use 'tpope/vim-surround'
+    use 'windwp/nvim-ts-autotag'
+    use 'windwp/nvim-autopairs'
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
 
     -- lsp
     use { 'williamboman/mason.nvim' }
@@ -239,5 +249,19 @@ require 'nvim-treesitter.configs'.setup {
 
     highlight = {
         enable = true,
-    }
+    },
 }
+
+-- tag close
+require('nvim-ts-autotag').setup({
+    opts = {
+        -- Defaults
+        enable_close = true,          -- Auto close tags
+        enable_rename = true,         -- Auto rename pairs of tags
+        enable_close_on_slash = false -- Auto close on trailing </
+    },
+})
+
+require('nvim-autopairs').setup({
+    disable_filetype = { 'TelescopePrompt', 'vim' }
+})
